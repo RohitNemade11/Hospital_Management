@@ -1,0 +1,111 @@
+import java.util.*;
+
+  abstract class BankAccount {
+    String accountNumber;
+    double balance;
+	
+	
+    public BankAccount(String accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+	
+	public void deposit(int amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Error: Deposit amount must be greater than zero.");
+        }
+    }
+	
+	public void withdraw(double amount) {
+        if (amount > balance) {
+            System.out.println("Error: Insufficient funds.");
+        } else if (amount <= 0) {
+            System.out.println("Error: Invalid withdrawal amount.");
+        } else {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        }
+    }
+
+    
+    abstract void applyInterest();
+}
+
+
+class SavingAccount extends BankAccount {
+    double interestRate; 
+
+    
+    public SavingAccount(String accountNumber, double balance, double interestRate) {
+        super(accountNumber, balance);
+        this.interestRate = interestRate;
+    }
+
+    
+    @Override
+    void applyInterest() {
+        double interest = (balance * interestRate) / 100;
+        balance += interest;
+        System.out.println("Interest Applied: " + interest);
+    }
+}
+
+public class BankApplication1
+{
+      public static void main(String[]args)
+	  {
+	     Scanner xyz= new Scanner(System.in);
+		 
+		 System.out.println("Enter the Account number");
+		 String accountNumber = xyz.nextLine();
+		 
+		 System.out.println("Enter the initial balance");
+		 double balance = xyz.nextDouble();
+		 
+		  System.out.print("Enter Interest Rate (%): ");
+        double interestRate = xyz.nextDouble();
+		
+		
+		SavingAccount account = new SavingAccount(accountNumber, balance, interestRate);
+		
+		
+		while (true) {
+            System.out.println("\n1. Deposit\n2. Withdraw\n3. Apply Interest\n4. Check Balance\n5. Exit");
+            System.out.print("Enter the choice: ");
+            int choice = xyz.nextInt();
+			
+		switch (choice) {
+		
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmount = xyz.nextDouble();
+                    account.deposit(depositAmount);
+                    break;
+					
+				case 2:
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawAmount = xyz.nextDouble();
+                    account.withdraw(withdrawAmount);
+                    break;	
+					
+				 case 3:
+                    account.applyInterest();
+                    break;
+
+				case 4:
+                    System.out.println("Current Balance: " + account.balance);
+                    break;
+					
+				case 5:
+                    System.out.println("Exiting... Thank you!");
+                    //xyz.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
+    }
+}

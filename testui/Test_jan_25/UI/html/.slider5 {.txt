@@ -1,0 +1,56 @@
+.slider5 {
+    background-color: #FFD700; /* Gold color */
+    grid-area: slider5;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.slider5 h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.slider5 p {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #555;
+}
+
+/* Styling for slider6 */
+.slider6 {
+    background-color: #DC143C; /* Crimson color */
+    grid-area: slider6;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    color: white;
+}
+
+.slider6 h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.slider6 p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.slider6 button {
+    padding: 12px 25px;
+    background-color: white;
+    color: #DC143C;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.slider6 button:hover {
+    background-color: #ff4d6d;
+    color: white;
+}

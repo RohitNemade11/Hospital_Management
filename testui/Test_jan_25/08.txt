@@ -1,0 +1,388 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.40 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database revise
+    -> ;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use revise;
+Database changed
+mysql> create table provinces_name (province_id char(2) primary key,provice_name varchar(100));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table patients (patient_id int(5) primary key,first_name varchar(50),last_name varchar(50),gender char(1),birth_date date,city varchar(50),province_id char(2),allergies varchar(100),height decimal(5,2),weight decimal(5,2),foreign key (province_id) references provinces_name(province_id));
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> create table doctors (doctor_id int(2) primary key,first_name varchar(50),last_name varchar(50),speciality varchar(100));
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> create table admission (admission_id int(3) primary key auto_increment,patient_id int(5),admission_date date,discharge_date date,diagnosis varchar(250),attending_doctor_id int(5),foreign key (patient_id) references patients(patient_id),foreign key (attending_doctor_id) references doctors(doctor_id));
+Query OK, 0 rows affected, 3 warnings (0.07 sec)
+
+mysql> insert into provinces_name value('ON','Ontario'),('CA','California'),('BC','British Columbia'),('JA','Jammu Ghat'),('SY','Sydney');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from provinces_name;
++-------------+------------------+
+| province_id | provice_name     |
++-------------+------------------+
+| BC          | British Columbia |
+| CA          | California       |
+| JA          | Jammu Ghat       |
+| ON          | Ontario          |
+| SY          | Sydney           |
++-------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into patients values(1, 'John', 'Doe', 'M', '1990-01-15', 'Toronto', 'ON', 'Peanuts', 5.8, 70.5),(2, 'Jane', 'Smith', 'F', '1985-03-25', 'Hamilton', 'ON', 'None', 5.5, 60.0),(3, 'Alex', 'Johnson', 'M', '2000-07-10', 'Ottawa', 'QC', 'Dust', 5.9, 75.0),(4, 'Anna', 'Lee', 'F', '1992-11-20', 'Toronto', 'ON', 'None', 5.7, 65.0),(5, 'Mark', 'Brown', 'M', '1988-05-12', 'Hamilton', 'ON', 'None', 5.9, 80.0),(6, 'Alice', 'Davis', 'F', '1995-08-30', 'Toronto', 'BC', 'None', 5.6, 55.0),(7, 'Orlando', 'Garcia', 'M', '1998-02-18', 'Ottawa', 'ON', 'None', 6.0, 72.5),(8, 'Amelia', 'Wilson', 'F', '1993-07-23', 'Toronto', 'ON', 'None', 5.7, 60.5),(9, 'Aron', 'Miller', 'M', '1989-12-12', 'Hamilton', 'ON', 'None', 5.8, 75.0),(10, 'Oscar', 'Martinez', 'M', '2001-03-03', 'Toronto', 'ON', 'None', 5.9, 78.0);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`revise`.`patients`, CONSTRAINT `patients_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces_name` (`province_id`))
+mysql>
+mysql>
+mysql> insert into patients values(1, 'John', 'Doe', 'M', '1990-01-15', 'Toronto', 'ON', 'Peanuts', 5.8, 70.5),(2, 'Jane', 'Smith', 'F', '1985-03-25', 'Hamilton', 'ON', 'None', 5.5, 60.0),(3, 'Alex', 'Johnson', 'M', '2000-07-10', 'Ottawa', 'SY', 'Dust', 5.9, 75.0),(4, 'Anna', 'Lee', 'F', '1992-11-20', 'Toronto', 'ON', 'None', 5.7, 65.0),(5, 'Mark', 'Brown', 'M', '1988-05-12', 'Hamilton', 'ON', 'None', 5.9, 80.0),(6, 'Alice', 'Davis', 'F', '1995-08-30', 'Toronto', 'BC', 'None', 5.6, 55.0),(7, 'Orlando', 'Garcia', 'M', '1998-02-18', 'Ottawa', 'ON', 'None', 6.0, 72.5),(8, 'Amelia', 'Wilson', 'F', '1993-07-23', 'Toronto', 'ON', 'None', 5.7, 60.5),(9, 'Aron', 'Miller', 'M', '1989-12-12', 'Hamilton', 'ON', 'None', 5.8, 75.0),(10, 'Oscar', 'Martinez', 'M', '2001-03-03', 'Toronto', 'ON', 'None', 5.9, 78.0);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from patients;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> insert into doctors values(1, 'Dr. maxwell', 'glenn', 'Cardiology'),(2, 'Dr. stoinis', 'marcus', 'Neurology'),(3, 'Dr. warner', 'Miller', 'Pediatrics'),(4, 'Dr. steve', 'smith', 'cardiologist'),(5, 'Dr. mathew', 'hidden', 'Pediatrics');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from doctors;
++-----------+-------------+-----------+--------------+
+| doctor_id | first_name  | last_name | speciality   |
++-----------+-------------+-----------+--------------+
+|         1 | Dr. maxwell | glenn     | Cardiology   |
+|         2 | Dr. stoinis | marcus    | Neurology    |
+|         3 | Dr. warner  | Miller    | Pediatrics   |
+|         4 | Dr. steve   | smith     | cardiologist |
+|         5 | Dr. mathew  | hidden    | Pediatrics   |
++-----------+-------------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into admission values(1,1, '2025-01-01', '2025-01-05', 'Heart Attack', 1),(1,2, '2025-01-02', '2025-01-06', 'Migraine', 2),(3,4, '2025-05-02', '2025-10-06', 'cancer', 4),(4,3, '2025-01-02', '2025-01-06', 'Migraine', 3),(5,5, '2025-01-02', '2025-01-06', 'Migraine', 5);
+ERROR 1062 (23000): Duplicate entry '1' for key 'admission.PRIMARY'
+mysql> insert into admission values(1,5, '2025-01-01', '2025-01-05', 'Heart Attack', 1),(1,2, '2025-01-02', '2025-01-06', 'Migraine', 2),(3,4, '2025-05-02', '2025-10-06', 'cancer', 4),(4,3, '2025-01-02', '2025-01-06', 'Migraine', 3),(5,1, '2025-01-02', '2025-01-06', 'Migraine', 5);
+ERROR 1062 (23000): Duplicate entry '1' for key 'admission.PRIMARY'
+mysql> insert into admission values(1,5, '2025-01-01', '2025-01-05', 'Heart Attack', 2),(1,2, '2025-01-02', '2025-01-06', 'Migraine', 2),(3,4, '2025-05-02', '2025-10-06', 'cancer', 4),(4,3, '2025-01-02', '2025-01-06', 'Migraine', 3),(5,1, '2025-01-02', '2025-01-06', 'Migraine', 3);
+ERROR 1062 (23000): Duplicate entry '1' for key 'admission.PRIMARY'
+mysql> insert into admission values(1, 5, '2025-01-01', '2025-01-05', 'Heart Attack', 2),(2, 2, '2025-01-02', '2025-01-06', 'Migraine', 2),(3, 4, '2025-05-02', '2025-10-06', 'Cancer', 4),(4, 3, '2025-01-02', '2025-01-06', 'Migraine', 3),(5, 1, '2025-01-02', '2025-01-06', 'Migraine', 3);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from admission;
++--------------+------------+----------------+----------------+--------------+---------------------+
+| admission_id | patient_id | admission_date | discharge_date | diagnosis    | attending_doctor_id |
++--------------+------------+----------------+----------------+--------------+---------------------+
+|            1 |          5 | 2025-01-01     | 2025-01-05     | Heart Attack |                   2 |
+|            2 |          2 | 2025-01-02     | 2025-01-06     | Migraine     |                   2 |
+|            3 |          4 | 2025-05-02     | 2025-10-06     | Cancer       |                   4 |
+|            4 |          3 | 2025-01-02     | 2025-01-06     | Migraine     |                   3 |
+|            5 |          1 | 2025-01-02     | 2025-01-06     | Migraine     |                   3 |
++--------------+------------+----------------+----------------+--------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from patients;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from doctors;
++-----------+-------------+-----------+--------------+
+| doctor_id | first_name  | last_name | speciality   |
++-----------+-------------+-----------+--------------+
+|         1 | Dr. maxwell | glenn     | Cardiology   |
+|         2 | Dr. stoinis | marcus    | Neurology    |
+|         3 | Dr. warner  | Miller    | Pediatrics   |
+|         4 | Dr. steve   | smith     | cardiologist |
+|         5 | Dr. mathew  | hidden    | Pediatrics   |
++-----------+-------------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from admission;
++--------------+------------+----------------+----------------+--------------+---------------------+
+| admission_id | patient_id | admission_date | discharge_date | diagnosis    | attending_doctor_id |
++--------------+------------+----------------+----------------+--------------+---------------------+
+|            1 |          5 | 2025-01-01     | 2025-01-05     | Heart Attack |                   2 |
+|            2 |          2 | 2025-01-02     | 2025-01-06     | Migraine     |                   2 |
+|            3 |          4 | 2025-05-02     | 2025-10-06     | Cancer       |                   4 |
+|            4 |          3 | 2025-01-02     | 2025-01-06     | Migraine     |                   3 |
+|            5 |          1 | 2025-01-02     | 2025-01-06     | Migraine     |                   3 |
++--------------+------------+----------------+----------------+--------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from provinces_name;
++-------------+------------------+
+| province_id | provice_name     |
++-------------+------------------+
+| BC          | British Columbia |
+| CA          | California       |
+| JA          | Jammu Ghat       |
+| ON          | Ontario          |
+| SY          | Sydney           |
++-------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from patients where first_name='John' and city='Toronto';
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city    | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto | ON          | Peanuts   |   5.80 |  70.50 |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from patients where city='Toronto' or city='Hamilton';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from patients where province_id!=ON;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON' at line 1
+mysql> select * from patients where province_id!='ON';
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city    | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto | BC          | None      |   5.60 |  55.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa  | SY          | Dust      |   5.90 |  75.00 |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select * from patients order by first_name;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from patients order by first_name desc;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from patients order by first_name,last_name;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from patients order by first_name and last_name;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set, 10 warnings (0.01 sec)
+
+mysql> select * from patients order by first_name asc and last_name desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and last_name desc' at line 1
+mysql> select * from patients order by first_name asc,last_name desc;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from patients order by last_name desc;
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+10 rows in set (0.00 sec)
+
+mysql> select * from patients order by last_name desc,order by first_name asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by first_name asc' at line 1
+mysql> select * from patients where first_name like '%a';
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city    | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto | ON          | None      |   5.70 |  65.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto | ON          | None      |   5.70 |  60.50 |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select * from patients where first_name like 'a%';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from patients where first_name like '%or%';
++------------+------------+-----------+--------+------------+--------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city   | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+--------+-------------+-----------+--------+--------+
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa | ON          | None      |   6.00 |  72.50 |
++------------+------------+-----------+--------+------------+--------+-------------+-----------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from patients where first_name like '%_r';
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city    | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+---------+-------------+-----------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from patients where first_name like '%_r%';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from patients where first_name like '_r%';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from patients where first_name like 'a__%';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          3 | Alex       | Johnson   | M      | 2000-07-10 | Ottawa   | SY          | Dust      |   5.90 |  75.00 |
+|          4 | Anna       | Lee       | F      | 1992-11-20 | Toronto  | ON          | None      |   5.70 |  65.00 |
+|          6 | Alice      | Davis     | F      | 1995-08-30 | Toronto  | BC          | None      |   5.60 |  55.00 |
+|          8 | Amelia     | Wilson    | F      | 1993-07-23 | Toronto  | ON          | None      |   5.70 |  60.50 |
+|          9 | Aron       | Miller    | M      | 1989-12-12 | Hamilton | ON          | None      |   5.80 |  75.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from patients where first_name like 'a%o';
+Empty set (0.00 sec)
+
+mysql> select * from patients where first_name not like 'a%';
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+| patient_id | first_name | last_name | gender | birth_date | city     | province_id | allergies | height | weight |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+|          1 | John       | Doe       | M      | 1990-01-15 | Toronto  | ON          | Peanuts   |   5.80 |  70.50 |
+|          2 | Jane       | Smith     | F      | 1985-03-25 | Hamilton | ON          | None      |   5.50 |  60.00 |
+|          5 | Mark       | Brown     | M      | 1988-05-12 | Hamilton | ON          | None      |   5.90 |  80.00 |
+|          7 | Orlando    | Garcia    | M      | 1998-02-18 | Ottawa   | ON          | None      |   6.00 |  72.50 |
+|         10 | Oscar      | Martinez  | M      | 2001-03-03 | Toronto  | ON          | None      |   5.90 |  78.00 |
++------------+------------+-----------+--------+------------+----------+-------------+-----------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql>

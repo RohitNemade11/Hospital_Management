@@ -1,0 +1,992 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 1. Find the total sales per product from the Sales table.
+SELECT product_id, SUM(sales_amount) AS total_sales
+FROM Sales
+GROUP BY product_id;
+
+-- 2. Find the average salary by department in the Employee table.
+SELECT department_id, AVG(salary) AS avg_salary
+FROM Employee
+GROUP BY department_id;
+
+-- 3. Count the number of employees working in each department.
+SELECT department_id, COUNT(*) AS employee_count
+FROM Employee
+GROUP BY department_id;
+
+-- 4. Find the maximum salary for each department.
+SELECT department_id, MAX(salary) AS max_salary
+FROM Employee
+GROUP BY department_id;
+
+-- 5. Calculate the total number of orders per customer from the Orders table.
+SELECT customer_id, COUNT(order_id) AS total_orders
+FROM Orders
+GROUP BY customer_id;
+
+-- 6. Find the highest and lowest salary in each department.
+SELECT department_id, 
+       MAX(salary) AS highest_salary, 
+       MIN(salary) AS lowest_salary
+FROM Employee
+GROUP BY department_id;
+
+-- 7. Get the average order amount per customer.
+SELECT customer_id, AVG(order_amount) AS avg_order_amount
+FROM Orders
+GROUP BY customer_id;
+
+-- 8. Find the total revenue per month.
+SELECT DATE_FORMAT(order_date, '%Y-%m') AS month, 
+       SUM(order_amount) AS total_revenue
+FROM Orders
+GROUP BY month;
+
+-- 9. Find the total quantity sold for each product.
+SELECT product_id, SUM(quantity) AS total_quantity_sold
+FROM Sales
+GROUP BY product_id;
+
+-- 10. Get the average age of employees in each department.
+SELECT department_id, AVG(age) AS avg_age
+FROM Employee
+GROUP BY department_id;
+==========================================================================================
+-- 1. Find all customers whose names start with 'A'.
+SELECT * 
+FROM Customers 
+WHERE name LIKE 'A%';
+
+-- 2. Find all employees whose email contains 'gmail.com'.
+SELECT * 
+FROM Employees 
+WHERE email LIKE '%gmail.com%';
+
+-- 3. Search for all products with names starting with 'M' and ending with 'e'.
+SELECT * 
+FROM Products 
+WHERE name LIKE 'M%e';
+
+-- 4. Retrieve all orders where the customer’s address contains the word 'Street'.
+SELECT * 
+FROM Orders 
+WHERE address LIKE '%Street%';
+
+-- 5. Find all books whose titles contain the word 'SQL'.
+SELECT * 
+FROM Books 
+WHERE title LIKE '%SQL%';
+
+-- 6. List all employees whose job title contains the word 'Manager'.
+SELECT * 
+FROM Employees 
+WHERE job_title LIKE '%Manager%';
+
+-- 7. Find products whose names start with 'P' or 'S'.
+SELECT * 
+FROM Products 
+WHERE name LIKE 'P%' OR name LIKE 'S%';
+
+-- 8. Find all students with names that end with 'son'.
+SELECT * 
+FROM Students 
+WHERE name LIKE '%son';
+
+-- 9. Retrieve records where the description contains the term 'discount'.
+SELECT * 
+FROM Records 
+WHERE description LIKE '%discount%';
+
+-- 10. Search for customers whose phone numbers start with '555'.
+SELECT * 
+FROM Customers 
+WHERE phone_number LIKE '555%';
+===========================================================================================
+-- 1. Find the departments with more than 10 employees.
+SELECT department_id, COUNT(*) AS employee_count
+FROM Employees
+GROUP BY department_id
+HAVING COUNT(*) > 10;
+
+-- 2. Retrieve the average salary for each department, but only for departments with more than 5 employees.
+SELECT department_id, AVG(salary) AS avg_salary
+FROM Employees
+GROUP BY department_id
+HAVING COUNT(*) > 5;
+
+-- 3. Get the total order amount per customer where the total amount is greater than 500.
+SELECT customer_id, SUM(order_amount) AS total_order_amount
+FROM Orders
+GROUP BY customer_id
+HAVING SUM(order_amount) > 500;
+
+-- 4. Find the products with total sales greater than 1000 units.
+SELECT product_id, SUM(quantity) AS total_units_sold
+FROM Sales
+GROUP BY product_id
+HAVING SUM(quantity) > 1000;
+
+-- 5. List all employees whose salary is greater than 50,000, grouped by department.
+SELECT department_id, employee_id, name, salary
+FROM Employees
+WHERE salary > 50000
+ORDER BY department_id;
+
+-- 6. Retrieve the number of orders per customer where the number of orders is greater than 5.
+SELECT customer_id, COUNT(order_id) AS total_orders
+FROM Orders
+GROUP BY customer_id
+HAVING COUNT(order_id) > 5;
+
+-- 7. Find employees with salaries above 70,000 and working in departments with more than 2 employees.
+SELECT e.employee_id, e.name, e.salary, e.department_id
+FROM Employees e
+JOIN (
+    SELECT department_id
+    FROM Employees
+    GROUP BY department_id
+    HAVING COUNT(*) > 2
+) d ON e.department_id = d.department_id
+WHERE e.salary > 70000;
+
+-- 8. Get the average revenue per product where the product has more than 100 sales.
+SELECT product_id, AVG(sales_amount) AS avg_revenue
+FROM Sales
+GROUP BY product_id
+HAVING SUM(quantity) > 100;
+
+-- 9. Find all customers who placed more than 3 orders.
+SELECT customer_id, COUNT(order_id) AS order_count
+FROM Orders
+GROUP BY customer_id
+HAVING COUNT(order_id) > 3;
+
+-- 10. Retrieve the departments with the maximum salary greater than 100,000.
+SELECT department_id, MAX(salary) AS max_salary
+FROM Employees
+GROUP BY department_id
+HAVING MAX(salary) > 100000;
+===========================================================================================
+-- 1. Find the total revenue from the Sales table.
+SELECT SUM(sales_amount) AS total_revenue
+FROM Sales;
+
+-- 2. Calculate the average salary of all employees.
+SELECT AVG(salary) AS avg_salary
+FROM Employees;
+
+-- 3. Find the minimum and maximum order amount from the Orders table.
+SELECT MIN(order_amount) AS min_order, MAX(order_amount) AS max_order
+FROM Orders;
+
+-- 4. Get the count of all orders placed in 2024.
+SELECT COUNT(*) AS total_orders_2024
+FROM Orders
+WHERE YEAR(order_date) = 2024;
+
+-- 5. Find the total number of products sold in 2024.
+SELECT SUM(quantity) AS total_products_sold
+FROM Sales
+WHERE YEAR(sales_date) = 2024;
+
+-- 6. Get the sum of all the quantities of products ordered.
+SELECT SUM(quantity) AS total_quantity_ordered
+FROM Orders;
+
+-- 7. Retrieve the highest salary among all employees.
+SELECT MAX(salary) AS highest_salary
+FROM Employees;
+
+-- 8. Find the average order value for each customer.
+SELECT customer_id, AVG(order_amount) AS avg_order_value
+FROM Orders
+GROUP BY customer_id;
+
+-- 9. Get the total number of students in each grade.
+SELECT grade, COUNT(*) AS total_students
+FROM Students
+GROUP BY grade;
+
+-- 10. Find the total number of books borrowed in a month.
+SELECT DATE_FORMAT(borrow_date, '%Y-%m') AS month, COUNT(*) AS total_books_borrowed
+FROM BorrowedBooks
+GROUP BY month;
+=======================================================================================
+-- 1. Retrieve all employees and their department names using an INNER JOIN.
+SELECT e.employee_id, e.name AS employee_name, d.name AS department_name
+FROM Employees e
+INNER JOIN Departments d ON e.department_id = d.department_id;
+
+-- 2. Find all customers and the orders they placed (LEFT JOIN).
+SELECT c.customer_id, c.name AS customer_name, o.order_id, o.order_date, o.order_amount
+FROM Customers c
+LEFT JOIN Orders o ON c.customer_id = o.customer_id;
+
+-- 3. Get all products and their corresponding categories (RIGHT JOIN).
+SELECT p.product_id, p.name AS product_name, c.category_name
+FROM Products p
+RIGHT JOIN Categories c ON p.category_id = c.category_id;
+
+-- 4. Retrieve customers who have not placed any orders (OUTER JOIN).
+SELECT c.customer_id, c.name AS customer_name
+FROM Customers c
+LEFT JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+
+-- 5. Get a list of all orders and the products ordered (INNER JOIN).
+SELECT o.order_id, o.customer_id, p.product_id, p.name AS product_name, oi.quantity
+FROM Orders o
+INNER JOIN OrderItems oi ON o.order_id = oi.order_id
+INNER JOIN Products p ON oi.product_id = p.product_id;
+
+-- 6. Find the employees working in the same department as another employee (SELF JOIN).
+SELECT e1.employee_id AS emp1_id, e1.name AS emp1_name, e2.employee_id AS emp2_id, e2.name AS emp2_name, e1.department_id
+FROM Employees e1
+INNER JOIN Employees e2 ON e1.department_id = e2.department_id AND e1.employee_id <> e2.employee_id;
+
+-- 7. Retrieve employees and their respective managers.
+SELECT e.employee_id, e.name AS employee_name, m.employee_id AS manager_id, m.name AS manager_name
+FROM Employees e
+LEFT JOIN Employees m ON e.manager_id = m.employee_id;
+
+-- 8. Get all sales with the product name and salesperson name.
+SELECT s.sale_id, s.sales_amount, p.name AS product_name, sp.name AS salesperson_name
+FROM Sales s
+INNER JOIN Products p ON s.product_id = p.product_id
+INNER JOIN Salespersons sp ON s.salesperson_id = sp.salesperson_id;
+
+-- 9. List all orders with the customer name and product details.
+SELECT o.order_id, c.name AS customer_name, p.name AS product_name, oi.quantity, oi.price
+FROM Orders o
+INNER JOIN Customers c ON o.customer_id = c.customer_id
+INNER JOIN OrderItems oi ON o.order_id = oi.order_id
+INNER JOIN Products p ON oi.product_id = p.product_id;
+
+-- 10. Retrieve customers and their latest order using a JOIN on Orders.
+SELECT c.customer_id, c.name AS customer_name, o.order_id, o.order_date, o.order_amount
+FROM Customers c
+INNER JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_date = (
+    SELECT MAX(order_date) 
+    FROM Orders 
+    WHERE customer_id = c.customer_id
+);
+=========================================================================================
+-- 1. Find employees with a salary greater than the average salary in the company.
+SELECT employee_id, name, salary
+FROM Employees
+WHERE salary > (SELECT AVG(salary) FROM Employees);
+
+-- 2. Retrieve products whose price is higher than the average price of all products.
+SELECT product_id, name, price
+FROM Products
+WHERE price > (SELECT AVG(price) FROM Products);
+
+-- 3. List all customers who have placed an order worth more than $500.
+SELECT DISTINCT c.customer_id, c.name
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_amount > 500;
+
+-- 4. Find employees who work in the same department as an employee named 'John'.
+SELECT e.employee_id, e.name, e.department_id
+FROM Employees e
+WHERE e.department_id = (
+    SELECT department_id FROM Employees WHERE name = 'John' LIMIT 1
+) AND e.name <> 'John';
+
+-- 5. Get the department with the highest average salary.
+SELECT department_id, AVG(salary) AS avg_salary
+FROM Employees
+GROUP BY department_id
+ORDER BY avg_salary DESC
+LIMIT 1;
+
+-- 6. Retrieve the customers who haven’t made any purchases.
+SELECT c.customer_id, c.name
+FROM Customers c
+LEFT JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+
+-- 7. Find the products that are sold by a certain supplier (e.g., supplier_id = 3).
+SELECT p.product_id, p.name
+FROM Products p
+JOIN Suppliers s ON p.supplier_id = s.supplier_id
+WHERE s.supplier_id = 3;
+
+-- 8. List all customers who placed orders after a specific date (e.g., '2024-01-01').
+SELECT DISTINCT c.customer_id, c.name
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_date > '2024-01-01';
+
+-- 9. Get the employees who are in a department with more than 20 employees.
+SELECT e.employee_id, e.name, e.department_id
+FROM Employees e
+WHERE e.department_id IN (
+    SELECT department_id
+    FROM Employees
+    GROUP BY department_id
+    HAVING COUNT(*) > 20
+);
+
+-- 10. Find the products with the lowest price.
+SELECT product_id, name, price
+FROM Products
+WHERE price = (SELECT MIN(price) FROM Products);
+======================================================================================
+-- 1. Create a procedure that adds a new employee to the Employee table.
+DELIMITER //
+CREATE PROCEDURE AddEmployee(
+    IN emp_name VARCHAR(100),
+    IN emp_salary DECIMAL(10,2),
+    IN emp_department_id INT
+)
+BEGIN
+    INSERT INTO Employees (name, salary, department_id)
+    VALUES (emp_name, emp_salary, emp_department_id);
+END //
+DELIMITER ;
+
+-- 2. Write a stored procedure to update the salary of an employee.
+DELIMITER //
+CREATE PROCEDURE UpdateEmployeeSalary(
+    IN emp_id INT,
+    IN new_salary DECIMAL(10,2)
+)
+BEGIN
+    UPDATE Employees
+    SET salary = new_salary
+    WHERE employee_id = emp_id;
+END //
+DELIMITER ;
+
+-- 3. Create a procedure that retrieves all orders for a given customer.
+DELIMITER //
+CREATE PROCEDURE GetCustomerOrders(
+    IN cust_id INT
+)
+BEGIN
+    SELECT * FROM Orders WHERE customer_id = cust_id;
+END //
+DELIMITER ;
+
+-- 4. Write a stored procedure that deletes all inactive customers.
+DELIMITER //
+CREATE PROCEDURE DeleteInactiveCustomers()
+BEGIN
+    DELETE FROM Customers WHERE active_status = 0;
+END //
+DELIMITER ;
+
+-- 5. Write a stored procedure that calculates the total sales for a given year.
+DELIMITER //
+CREATE PROCEDURE GetTotalSalesByYear(
+    IN sales_year INT,
+    OUT total_sales DECIMAL(15,2)
+)
+BEGIN
+    SELECT SUM(sales_amount) INTO total_sales
+    FROM Sales
+    WHERE YEAR(sales_date) = sales_year;
+END //
+DELIMITER ;
+
+-- 6. Create a procedure that lists all orders placed in the last month.
+DELIMITER //
+CREATE PROCEDURE GetOrdersLastMonth()
+BEGIN
+    SELECT * FROM Orders 
+    WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);
+END //
+DELIMITER ;
+
+-- 7. Create a procedure that calculates the total inventory value.
+DELIMITER //
+CREATE PROCEDURE GetTotalInventoryValue(OUT total_value DECIMAL(15,2))
+BEGIN
+    SELECT SUM(price * stock_quantity) INTO total_value FROM Products;
+END //
+DELIMITER ;
+
+-- 8. Write a procedure to find all products below the minimum stock level.
+DELIMITER //
+CREATE PROCEDURE GetLowStockProducts()
+BEGIN
+    SELECT * FROM Products WHERE stock_quantity < min_stock_level;
+END //
+DELIMITER ;
+
+-- 9. Create a procedure to retrieve all products within a given price range.
+DELIMITER //
+CREATE PROCEDURE GetProductsByPriceRange(
+    IN min_price DECIMAL(10,2),
+    IN max_price DECIMAL(10,2)
+)
+BEGIN
+    SELECT * FROM Products WHERE price BETWEEN min_price AND max_price;
+END //
+DELIMITER ;
+
+-- 10. Write a stored procedure that calculates the average order amount for a customer.
+DELIMITER //
+CREATE PROCEDURE GetAverageOrderAmount(
+    IN cust_id INT,
+    OUT avg_order DECIMAL(15,2)
+)
+BEGIN
+    SELECT AVG(order_amount) INTO avg_order
+    FROM Orders
+    WHERE customer_id = cust_id;
+END //
+DELIMITER ;
+===========================================================================================
+-- 1. Trigger to automatically update the stock quantity after an order is placed.
+DELIMITER //
+CREATE TRIGGER UpdateStockAfterOrder
+AFTER INSERT ON OrderItems
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET stock_quantity = stock_quantity - NEW.quantity
+    WHERE product_id = NEW.product_id;
+END //
+DELIMITER ;
+
+-- 2. Trigger to log every time a new product is added to the Products table.
+DELIMITER //
+CREATE TRIGGER LogNewProduct
+AFTER INSERT ON Products
+FOR EACH ROW
+BEGIN
+    INSERT INTO ProductLogs (product_id, action, log_time)
+    VALUES (NEW.product_id, 'Product Added', NOW());
+END //
+DELIMITER ;
+
+-- 3. Trigger to prevent employees from being deleted if they are assigned to a project.
+DELIMITER //
+CREATE TRIGGER PreventEmployeeDeletion
+BEFORE DELETE ON Employees
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM Projects WHERE employee_id = OLD.employee_id) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot delete employee assigned to a project';
+    END IF;
+END //
+DELIMITER ;
+
+-- 4. Trigger to update an employee’s last modified date when their record is updated.
+DELIMITER //
+CREATE TRIGGER UpdateEmployeeModifiedDate
+BEFORE UPDATE ON Employees
+FOR EACH ROW
+BEGIN
+    SET NEW.last_modified = NOW();
+END //
+DELIMITER ;
+
+-- 5. Trigger to prevent orders with a total amount of less than 100.
+DELIMITER //
+CREATE TRIGGER PreventLowValueOrders
+BEFORE INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    IF NEW.order_amount < 100 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Order amount must be at least 100';
+    END IF;
+END //
+DELIMITER ;
+
+-- 6. Trigger to automatically insert a log entry whenever an order is canceled.
+DELIMITER //
+CREATE TRIGGER LogOrderCancellation
+AFTER UPDATE ON Orders
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'Canceled' THEN
+        INSERT INTO OrderLogs (order_id, action, log_time)
+        VALUES (NEW.order_id, 'Order Canceled', NOW());
+    END IF;
+END //
+DELIMITER ;
+
+-- 7. Trigger to ensure no employee can be inserted with a duplicate email.
+DELIMITER //
+CREATE TRIGGER PreventDuplicateEmployeeEmail
+BEFORE INSERT ON Employees
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM Employees WHERE email = NEW.email) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Duplicate email not allowed';
+    END IF;
+END //
+DELIMITER ;
+
+-- 8. Trigger to delete an order record when a related customer is deleted.
+DELIMITER //
+CREATE TRIGGER DeleteOrdersOnCustomerDeletion
+AFTER DELETE ON Customers
+FOR EACH ROW
+BEGIN
+    DELETE FROM Orders WHERE customer_id = OLD.customer_id;
+END //
+DELIMITER ;
+
+-- 9. Trigger to automatically adjust the price of a product when stock exceeds 1000 units.
+DELIMITER //
+CREATE TRIGGER AdjustPriceOnHighStock
+AFTER UPDATE ON Products
+FOR EACH ROW
+BEGIN
+    IF NEW.stock_quantity > 1000 THEN
+        UPDATE Products
+        SET price = price * 0.9
+        WHERE product_id = NEW.product_id;
+    END IF;
+END //
+DELIMITER ;
+
+-- 10. Trigger to update a customer’s loyalty points whenever they place an order.
+DELIMITER //
+CREATE TRIGGER UpdateLoyaltyPointsOnOrder
+AFTER INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE Customers
+    SET loyalty_points = loyalty_points + (NEW.order_amount / 10)
+    WHERE customer_id = NEW.customer_id;
+END //
+DELIMITER ;
+==========================================================================================
+-- 1. Function to return the full name of an employee given their first and last names.
+DELIMITER //
+CREATE FUNCTION GetFullName(first_name VARCHAR(100), last_name VARCHAR(100))
+RETURNS VARCHAR(200) DETERMINISTIC
+BEGIN
+    RETURN CONCAT(first_name, ' ', last_name);
+END //
+DELIMITER ;
+
+-- 2. Function to calculate the age of a person based on their birthdate.
+DELIMITER //
+CREATE FUNCTION CalculateAge(birthdate DATE)
+RETURNS INT DETERMINISTIC
+BEGIN
+    RETURN TIMESTAMPDIFF(YEAR, birthdate, CURDATE());
+END //
+DELIMITER ;
+
+-- 3. Function to get the day of the week for a given date.
+DELIMITER //
+CREATE FUNCTION GetDayOfWeek(date_value DATE)
+RETURNS VARCHAR(20) DETERMINISTIC
+BEGIN
+    RETURN DAYNAME(date_value);
+END //
+DELIMITER ;
+
+-- 4. Function that returns the square of a number.
+DELIMITER //
+CREATE FUNCTION SquareNumber(num INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+    RETURN num * num;
+END //
+DELIMITER ;
+
+-- 5. Function to determine if a number is even or odd.
+DELIMITER //
+CREATE FUNCTION IsEvenOrOdd(num INT)
+RETURNS VARCHAR(10) DETERMINISTIC
+BEGIN
+    RETURN IF(num % 2 = 0, 'Even', 'Odd');
+END //
+DELIMITER ;
+
+-- 6. Function to get the total price of an order including tax.
+DELIMITER //
+CREATE FUNCTION GetTotalPrice(order_amount DECIMAL(10,2), tax_rate DECIMAL(5,2))
+RETURNS DECIMAL(10,2) DETERMINISTIC
+BEGIN
+    RETURN order_amount + (order_amount * tax_rate / 100);
+END //
+DELIMITER ;
+
+-- 7. Function to calculate the area of a circle given its radius.
+DELIMITER //
+CREATE FUNCTION CircleArea(radius DECIMAL(10,2))
+RETURNS DECIMAL(10,2) DETERMINISTIC
+BEGIN
+    RETURN PI() * radius * radius;
+END //
+DELIMITER ;
+
+-- 8. Function to format a customer’s phone number in (XXX) XXX-XXXX format.
+DELIMITER //
+CREATE FUNCTION FormatPhoneNumber(phone_number VARCHAR(20))
+RETURNS VARCHAR(20) DETERMINISTIC
+BEGIN
+    RETURN CONCAT('(', SUBSTRING(phone_number, 1, 3), ') ', 
+                  SUBSTRING(phone_number, 4, 3), '-', 
+                  SUBSTRING(phone_number, 7, 4));
+END //
+DELIMITER ;
+
+-- 9. Function that returns the longest word in a given string.
+DELIMITER //
+CREATE FUNCTION GetLongestWord(input_text TEXT)
+RETURNS VARCHAR(100) DETERMINISTIC
+BEGIN
+    DECLARE longest_word VARCHAR(100);
+    DECLARE temp_word VARCHAR(100);
+    DECLARE word_list TEXT;
+    DECLARE separator CHAR(1);
+    DECLARE pos INT;
+
+    SET word_list = input_text;
+    SET longest_word = '';
+    SET separator = ' ';
+    
+    WHILE LENGTH(word_list) > 0 DO
+        SET pos = LOCATE(separator, word_list);
+        IF pos = 0 THEN
+            SET temp_word = word_list;
+            SET word_list = '';
+        ELSE
+            SET temp_word = LEFT(word_list, pos - 1);
+            SET word_list = SUBSTRING(word_list, pos + 1);
+        END IF;
+        
+        IF LENGTH(temp_word) > LENGTH(longest_word) THEN
+            SET longest_word = temp_word;
+        END IF;
+    END WHILE;
+    
+    RETURN longest_word;
+END //
+DELIMITER ;
+
+-- 10. Function to check if a customer’s loyalty points exceed a certain threshold.
+DELIMITER //
+CREATE FUNCTION CheckLoyaltyPoints(customer_id INT, threshold INT)
+RETURNS VARCHAR(10) DETERMINISTIC
+BEGIN
+    DECLARE points INT;
+    SELECT loyalty_points INTO points FROM Customers WHERE customer_id = customer_id;
+    RETURN IF(points > threshold, 'Yes', 'No');
+END //
+DELIMITER ;
+=======================================================================================
+-- 1. View that shows all employees and their departments.
+CREATE VIEW EmployeeDepartment AS
+SELECT e.employee_id, e.name AS employee_name, d.name AS department_name
+FROM Employees e
+JOIN Departments d ON e.department_id = d.department_id;
+
+-- 2. View that lists customers and their order total for each month.
+CREATE VIEW CustomerMonthlyOrders AS
+SELECT c.customer_id, c.name AS customer_name, 
+       DATE_FORMAT(o.order_date, '%Y-%m') AS order_month, 
+       SUM(o.order_amount) AS total_order_amount
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, order_month;
+
+-- 3. View to get product names and their respective suppliers.
+CREATE VIEW ProductSupplier AS
+SELECT p.product_id, p.name AS product_name, s.name AS supplier_name
+FROM Products p
+JOIN Suppliers s ON p.supplier_id = s.supplier_id;
+
+-- 4. View to show all orders placed in the last 30 days.
+CREATE VIEW RecentOrders AS
+SELECT * FROM Orders 
+WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+-- 5. View to calculate the average salary per department.
+CREATE VIEW AvgSalaryByDepartment AS
+SELECT d.department_id, d.name AS department_name, AVG(e.salary) AS avg_salary
+FROM Employees e
+JOIN Departments d ON e.department_id = d.department_id
+GROUP BY d.department_id;
+
+-- 6. View that displays the total sales by month.
+CREATE VIEW MonthlySales AS
+SELECT DATE_FORMAT(s.sales_date, '%Y-%m') AS sales_month, 
+       SUM(s.sales_amount) AS total_sales
+FROM Sales s
+GROUP BY sales_month;
+
+-- 7. View to get all products with sales greater than 100 units.
+CREATE VIEW HighSalesProducts AS
+SELECT p.product_id, p.name AS product_name, SUM(oi.quantity) AS total_units_sold
+FROM OrderItems oi
+JOIN Products p ON oi.product_id = p.product_id
+GROUP BY p.product_id
+HAVING total_units_sold > 100;
+
+-- 8. View that lists customers and their loyalty points.
+CREATE VIEW CustomerLoyalty AS
+SELECT customer_id, name AS customer_name, loyalty_points
+FROM Customers;
+
+-- 9. View that combines customer, order, and product data.
+CREATE VIEW CustomerOrderProduct AS
+SELECT c.customer_id, c.name AS customer_name, 
+       o.order_id, o.order_date, 
+       p.product_id, p.name AS product_name, oi.quantity, oi.price
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+JOIN OrderItems oi ON o.order_id = oi.order_id
+JOIN Products p ON oi.product_id = p.product_id;
+
+-- 10. View that lists employees who have been with the company for more than 10 years.
+CREATE VIEW LongTermEmployees AS
+SELECT employee_id, name AS employee_name, hire_date, 
+       TIMESTAMPDIFF(YEAR, hire_date, CURDATE()) AS years_with_company
+FROM Employees
+WHERE TIMESTAMPDIFF(YEAR, hire_date, CURDATE()) > 10;
