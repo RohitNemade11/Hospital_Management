@@ -12,7 +12,7 @@ conn.connect((err) => {
     console.error('Database connection failed: ' + err.stack);
     return;
   }
-  console.log('new databse for rushii connected');
+  console.log('new databse for Rohit connected');
 });
 
 module.exports = conn;
