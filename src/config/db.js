@@ -12,7 +12,7 @@ conn.connect((err) => {
     console.error('Database connection failed: ' + err.stack);
     return;
   }
-  console.log('✅ Connected to MySQL database.');
+  console.log('new database connect');
 });
 
 module.exports = conn;
